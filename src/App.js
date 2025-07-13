@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import ProgressChart from './components/ProgressChart';
+
 import TrackerForm from './components/TrackerForm';
 import QuestionList from './components/QuestionList';
 import './App.css';
@@ -64,6 +66,7 @@ function App() {
       </div>
 
       <QuestionList questions={filteredQuestions} onDelete={handleDelete} />
+      <ProgressChart questions={questions} />
     </div>
   );
 }
