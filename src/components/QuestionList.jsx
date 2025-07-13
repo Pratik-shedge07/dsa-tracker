@@ -1,6 +1,6 @@
 import React from 'react';
 
-const QuestionList = ({ questions }) => {
+const QuestionList = ({ questions, onDelete }) => {
   if (questions.length === 0) return <p>No questions added yet.</p>;
 
   return (
@@ -12,6 +12,7 @@ const QuestionList = ({ questions }) => {
           <th>Difficulty</th>
           <th>Status</th>
           <th>Date</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -22,6 +23,9 @@ const QuestionList = ({ questions }) => {
             <td>{q.difficulty}</td>
             <td>{q.status}</td>
             <td>{q.date}</td>
+            <td>
+              <button onClick={() => onDelete(index)}>❌ Delete</button>
+            </td>
           </tr>
         ))}
       </tbody>
