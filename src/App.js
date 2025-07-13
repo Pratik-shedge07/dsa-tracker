@@ -16,18 +16,41 @@ function App() {
     localStorage.getItem('dark-mode') === 'true'
   );
 
-  // Load from localStorage
+  // 🔥 Daily Streak State
+  const [streak, setStreak] = useState(0);
+  const [lastSolvedDate, setLastSolvedDate] = useState('');
+
+  // Load data on mount
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem('dsa-questions')) || [];
     setQuestions(stored);
+
+    const savedStreak = parseInt(localStorage.getItem('codingStreak')) || 0;
+    const savedDate = localStorage.getItem('lastSolvedDate') || '';
+    const today = new Date().toDateString();
+
+    if (savedDate) {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+
+      if (new Date(savedDate).toDateString() === today) {
+        setStreak(savedStreak);
+        setLastSolvedDate(savedDate);
+      } else if (new Date(savedDate).toDateString() === yesterday.toDateString()) {
+        setStreak(savedStreak);
+        setLastSolvedDate(savedDate);
+      } else {
+        setStreak(0);
+        localStorage.setItem('codingStreak', '0');
+        localStorage.setItem('lastSolvedDate', '');
+      }
+    }
   }, []);
 
-  // Save questions to localStorage
   useEffect(() => {
     localStorage.setItem('dsa-questions', JSON.stringify(questions));
   }, [questions]);
 
-  // Handle dark mode effect
   useEffect(() => {
     localStorage.setItem('dark-mode', darkMode);
     document.body.className = darkMode ? 'dark' : '';
@@ -42,7 +65,21 @@ function App() {
     setQuestions(updated);
   };
 
-  // Sort questions
+  const markSolvedToday = () => {
+    const today = new Date().toDateString();
+    const lastDate = localStorage.getItem('lastSolvedDate');
+
+    if (lastDate !== today) {
+      const updatedStreak = streak + 1;
+      setStreak(updatedStreak);
+      setLastSolvedDate(today);
+      localStorage.setItem('codingStreak', updatedStreak.toString());
+      localStorage.setItem('lastSolvedDate', today);
+    } else {
+      alert('✅ You already marked today as solved!');
+    }
+  };
+
   const sortedQuestions = [...questions].sort((a, b) => {
     if (!sortKey) return 0;
 
@@ -62,7 +99,6 @@ function App() {
     return 0;
   });
 
-  // Filter and search
   const filteredQuestions = sortedQuestions.filter((q) => {
     return (
       (filterDifficulty === 'All' || q.difficulty === filterDifficulty) &&
@@ -75,13 +111,27 @@ function App() {
     <div className="App">
       <h1 className="heading">🧠 DSA Master Tracker</h1>
 
-      {/* 🌙 Dark Mode Toggle */}
-      <button
-        onClick={() => setDarkMode(!darkMode)}
-        style={{ marginBottom: '1rem' }}
-      >
-        {darkMode ? '☀️ Light Mode' : '🌙 Dark Mode'}
-      </button>
+      <button className="utility" onClick={() => setDarkMode(!darkMode)}>
+  {darkMode ? '☀️ Light Mode' : '🌙 Dark Mode'}
+</button>
+
+
+      {/* 🔥 Daily Coding Streak Section */}
+      <div className="streak-box">
+        <h2 className="streak-title">🔥 Daily Coding Streak</h2>
+        <p className="streak-count">
+          You’ve coded for <span className="streak-number">{streak}</span> day(s) in a row!
+        </p>
+        <button className="primary" onClick={markSolvedToday}>
+  ✅ Mark as Solved Today
+</button>
+
+        {lastSolvedDate !== new Date().toDateString() && (
+          <p className="streak-warning">
+            ⚠️ You haven’t marked a problem as solved today!
+          </p>
+        )}
+      </div>
 
       <TrackerForm onAdd={handleAdd} />
 
@@ -92,48 +142,33 @@ function App() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-
-        <select
-          value={filterDifficulty}
-          onChange={(e) => setFilterDifficulty(e.target.value)}
-        >
+        <select value={filterDifficulty} onChange={(e) => setFilterDifficulty(e.target.value)}>
           <option value="All">All Difficulties</option>
           <option value="Easy">Easy</option>
           <option value="Medium">Medium</option>
           <option value="Hard">Hard</option>
         </select>
-
-        <select
-          value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
-        >
+        <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
           <option value="All">All Statuses</option>
           <option value="Pending">Pending</option>
           <option value="Solved">Solved</option>
         </select>
-
         <select value={sortKey} onChange={(e) => setSortKey(e.target.value)}>
           <option value="">Sort By</option>
           <option value="title">Title</option>
           <option value="difficulty">Difficulty</option>
           <option value="date">Date</option>
         </select>
-
-        <select
-          value={sortOrder}
-          onChange={(e) => setSortOrder(e.target.value)}
-        >
+        <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
           <option value="asc">Asc</option>
           <option value="desc">Desc</option>
         </select>
       </div>
 
-      <button
-        onClick={() => exportToCSV(filteredQuestions)}
-        style={{ margin: '1rem' }}
-      >
-        📤 Export CSV
-      </button>
+      <button className="utility" onClick={() => exportToCSV(filteredQuestions)}>
+  📤 Export CSV
+</button>
+
 
       <QuestionList questions={filteredQuestions} onDelete={handleDelete} />
       <ProgressChart questions={questions} />

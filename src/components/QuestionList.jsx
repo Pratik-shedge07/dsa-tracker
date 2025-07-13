@@ -24,7 +24,8 @@ const QuestionList = ({ questions, onDelete }) => {
             <td>{q.status}</td>
             <td>{q.date}</td>
             <td>
-              <button onClick={() => onDelete(index)}>❌ Delete</button>
+              <button className="danger" onClick={() => onDelete(index)}>🗑️ Delete</button>
+
             </td>
           </tr>
         ))}
