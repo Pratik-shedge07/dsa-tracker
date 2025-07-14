@@ -1,3 +1,4 @@
+// 📄 App.js (with routing only, styling handled in sub-components)
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -5,7 +6,6 @@ import Dashboard from './pages/Dashboard';
 import AddQuestion from './pages/AddQuestion';
 import AllQuestions from './pages/AllQuestions';
 import ExportPage from './pages/ExportPage';
-import './App.css';
 
 function App() {
   const [questions, setQuestions] = useState([]);
@@ -22,7 +22,8 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem('dark-mode', darkMode);
-    document.body.className = darkMode ? 'dark' : '';
+    document.body.style.backgroundColor = darkMode ? '#121212' : '#f4f6f8';
+    document.body.style.color = darkMode ? '#e0e0e0' : '#2c3e50';
   }, [darkMode]);
 
   const handleAdd = (newQuestion) => {
@@ -38,7 +39,7 @@ function App() {
     <Router>
       <Navbar darkMode={darkMode} toggleDarkMode={() => setDarkMode(!darkMode)} />
       <Routes>
-        <Route path="/" element={<Dashboard questions={questions} />} />
+        <Route path="/" element={<Dashboard questions={questions} darkMode={darkMode} />} />
         <Route path="/add" element={<AddQuestion onAdd={handleAdd} />} />
         <Route path="/questions" element={<AllQuestions questions={questions} onDelete={handleDelete} />} />
         <Route path="/export" element={<ExportPage questions={questions} />} />
