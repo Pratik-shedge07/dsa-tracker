@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Nav = styled.nav`
   background-color: ${({ dark }) => (dark ? '#1e1e1e' : '#ffffff')};
@@ -23,6 +23,7 @@ const Title = styled.h1`
 const Actions = styled.div`
   display: flex;
   gap: 1rem;
+  align-items: center;
 `;
 
 const Button = styled.button`
@@ -43,6 +44,16 @@ const Button = styled.button`
     background-color: #2c80b4;
     transform: scale(1.05);
   }
+
+  &.logout {
+    background-color: #e74c3c;
+    color: white;
+  }
+
+  &.logout:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+  }
 `;
 
 const NavLink = styled(Link)`
@@ -55,7 +66,14 @@ const NavLink = styled(Link)`
   }
 `;
 
-function Navbar({ darkMode, toggleDarkMode }) {
+function Navbar({ darkMode, toggleDarkMode, isLoggedIn, onLogout }) {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    onLogout();
+    navigate('/login');
+  };
+
   return (
     <Nav dark={darkMode}>
       <Title>DSA Master Tracker</Title>
@@ -64,9 +82,15 @@ function Navbar({ darkMode, toggleDarkMode }) {
         <NavLink to="/add">Add</NavLink>
         <NavLink to="/questions">All</NavLink>
         <NavLink to="/export">Export</NavLink>
+        <NavLink to="/about">About</NavLink>
         <Button className="utility" onClick={toggleDarkMode}>
           {darkMode ? '🌞 Light Mode' : '🌙 Dark Mode'}
         </Button>
+        {isLoggedIn && (
+          <Button className="logout" onClick={handleLogout}>
+            🔓 Logout
+          </Button>
+        )}
       </Actions>
     </Nav>
   );
