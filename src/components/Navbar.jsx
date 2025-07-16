@@ -1,35 +1,46 @@
 import React from 'react';
 import styled from 'styled-components';
 import { NavLink as RouterNavLink, useNavigate } from 'react-router-dom';
+import { FiLayers, FiMoon, FiSun, FiLogOut } from 'react-icons/fi';
 
 const Nav = styled.nav`
-  background-color: ${({ dark }) => (dark ? '#1a1a1a' : '#ffffff')};
-  color: ${({ dark }) => (dark ? '#f0f0f0' : '#2c3e50')};
+  background-color: #0f172a;
+  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 1.1rem 2rem;
   margin-bottom: 2rem;
-  border-radius: 16px;
-  box-shadow: ${({ dark }) =>
-    dark ? '0 0 10px rgba(255,255,255,0.05)' : '0 2px 12px rgba(0,0,0,0.1)'};
-  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 0;
 
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 1rem;
+    padding: 1rem;
   }
 `;
 
+const LogoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const LogoIcon = styled(FiLayers)`
+  font-size: 1.8rem;
+  color: #38bdf8;
+`;
+
 const Title = styled.h1`
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 800;
-  letter-spacing: -0.5px;
+  margin: 0;
 `;
 
 const Actions = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   align-items: center;
   flex-wrap: wrap;
 `;
@@ -37,47 +48,47 @@ const Actions = styled.div`
 const NavLink = styled(RouterNavLink)`
   text-decoration: none;
   font-weight: 600;
-  color: inherit;
-  padding: 0.4rem 0.75rem;
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
+  color: white;
+  padding: 0.5rem 0.9rem;
+  transition: all 0.2s ease;
 
   &.active {
-    background-color: ${({ dark }) => (dark ? '#333' : '#e0e0e0')};
+    color: #38bdf8;
+    border-bottom: 2px solid #38bdf8;
   }
 
   &:hover {
-    background-color: ${({ dark }) => (dark ? '#2a2a2a' : '#f0f0f0')};
+    color: #38bdf8;
   }
 `;
 
-const Button = styled.button`
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
+const IconButton = styled.button`
+  background-color: transparent;
+  border: 2px solid #38bdf8;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  border-radius: 8px;
+  padding: 0.45rem 0.9rem;
   cursor: pointer;
-  border: none;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 
-  &.utility {
-    background-color: #3498db;
-    color: white;
-  }
-
-  &.utility:hover {
-    background-color: #2c80b4;
+  &:hover {
+    background-color: #38bdf8;
+    color: #0f172a;
     transform: scale(1.05);
   }
 
   &.logout {
-    background-color: #e74c3c;
-    color: white;
-  }
+    border-color: #ef4444;
 
-  &.logout:hover {
-    background-color: #c0392b;
-    transform: scale(1.05);
+    &:hover {
+      background-color: #ef4444;
+      color: white;
+    }
   }
 `;
 
@@ -90,33 +101,39 @@ function Navbar({ darkMode, toggleDarkMode, isLoggedIn, onLogout }) {
   };
 
   return (
-    <Nav dark={darkMode}>
-      <Title>⚡ DSA Master Tracker</Title>
+    <Nav>
+      <LogoContainer>
+        <LogoIcon />
+        <Title>DSA Tracker</Title>
+      </LogoContainer>
+
       <Actions>
-        <NavLink to="/" dark={darkMode} className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>
           Dashboard
         </NavLink>
-        <NavLink to="/add" dark={darkMode} className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/add" className={({ isActive }) => (isActive ? 'active' : '')}>
           Add
         </NavLink>
-        <NavLink to="/questions" dark={darkMode} className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/questions" className={({ isActive }) => (isActive ? 'active' : '')}>
           All
         </NavLink>
-        <NavLink to="/export" dark={darkMode} className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/export" className={({ isActive }) => (isActive ? 'active' : '')}>
           Export
         </NavLink>
-        <NavLink to="/about" dark={darkMode} className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to="/about" className={({ isActive }) => (isActive ? 'active' : '')}>
           About
         </NavLink>
 
-        <Button className="utility" onClick={toggleDarkMode}>
-          {darkMode ? '🌞 Light' : '🌙 Dark'}
-        </Button>
+        <IconButton onClick={toggleDarkMode}>
+          {darkMode ? <FiSun size={18} /> : <FiMoon size={18} />}
+          {darkMode ? 'Light' : 'Dark'}
+        </IconButton>
 
         {isLoggedIn && (
-          <Button className="logout" onClick={handleLogout}>
-            🔓 Logout
-          </Button>
+          <IconButton className="logout" onClick={handleLogout}>
+            <FiLogOut size={18} />
+            Logout
+          </IconButton>
         )}
       </Actions>
     </Nav>
