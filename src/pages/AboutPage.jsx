@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaUserGraduate } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaUserGraduate, FaDownload, FaReact, FaNodeJs } from 'react-icons/fa';
+import { SiMongodb, SiStyledcomponents } from 'react-icons/si';
 
 const Container = styled(motion.div)`
   max-width: 800px;
@@ -59,8 +60,18 @@ const ButtonLink = styled.a`
   font-weight: 600;
   text-decoration: none;
   font-size: 0.95rem;
-  background-color: ${({ type }) =>
-    type === 'github' ? '#24292e' : '#0077b5'};
+  background-color: ${({ type }) => {
+    switch (type) {
+      case 'github':
+        return '#24292e';
+      case 'linkedin':
+        return '#0077b5';
+      case 'resume':
+        return '#38bdf8';
+      default:
+        return '#4b5563';
+    }
+  }};
   color: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -68,6 +79,32 @@ const ButtonLink = styled.a`
   &:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+`;
+
+const TechStack = styled.div`
+  margin-top: 2.2rem;
+`;
+
+const StackTitle = styled.h3`
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  color: ${({ dark }) => (dark ? '#93c5fd' : '#1e3a8a')};
+`;
+
+const StackIcons = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  font-size: 1.8rem;
+
+  svg {
+    transition: transform 0.3s;
+    &:hover {
+      transform: scale(1.2);
+    }
   }
 `;
 
@@ -94,11 +131,11 @@ const AboutPage = () => {
       </Heading>
 
       <Paragraph>
-        A passionate <strong>B.Sc. CS student</strong> from <strong>Pune University</strong>, driven by the joy of building smart tools like this tracker to improve DSA consistency.
+        A <strong>B.Sc. CS student</strong> from <strong>Pune University</strong> building practical tools like this <strong>DSA Tracker</strong> to help coders stay consistent.
       </Paragraph>
 
       <Paragraph>
-        I love working with <strong>React.js</strong>, designing clean UIs, and learning more about <strong>backend systems</strong>. This project reflects my passion for problem-solving and discipline.
+        I enjoy working on <strong>React UIs</strong>, solving <strong>DSA problems</strong>, and diving into <strong>full-stack development</strong>. This project is a reflection of passion, patience, and progress.
       </Paragraph>
 
       <ButtonGroup>
@@ -119,7 +156,26 @@ const AboutPage = () => {
         >
           <FaLinkedin /> LinkedIn
         </ButtonLink>
+
+        <ButtonLink
+          href="/Pratik_Shedge_Resume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          type="resume"
+        >
+          <FaDownload /> Resume
+        </ButtonLink>
       </ButtonGroup>
+
+      <TechStack dark={dark}>
+        <StackTitle dark={dark}>Tech Stack</StackTitle>
+        <StackIcons>
+          <FaReact color="#61dafb" title="React" />
+          <SiStyledcomponents color="#db7093" title="styled-components" />
+          <FaNodeJs color="#3c873a" title="Node.js" />
+          <SiMongodb color="#4db33d" title="MongoDB" />
+        </StackIcons>
+      </TechStack>
     </Container>
   );
 };
