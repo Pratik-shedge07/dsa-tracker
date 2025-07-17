@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Lightbulb } from 'lucide-react'; // Imported icon
 import TrackerForm from '../components/TrackerForm';
 
 const Page = styled.div`
@@ -74,6 +75,9 @@ const TipBox = styled.div`
     dark ? '0 4px 12px rgba(255, 255, 255, 0.03)' : '0 4px 12px rgba(0, 0, 0, 0.06)'};
   font-size: 0.95rem;
   line-height: 1.6;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
 `;
 
 const Quote = styled.blockquote`
@@ -91,7 +95,7 @@ function AddQuestion({ onAdd }) {
     <Page dark={darkMode}>
       <Heading dark={darkMode}>Add New Question</Heading>
       <SubHeading dark={darkMode}>
-        Keep track of your DSA progress and never lose sight of what you've solved.  
+        Keep track of your DSA progress and never lose sight of what you've solved.
         Logging each question helps reinforce your memory and spot patterns.
       </SubHeading>
 
@@ -100,8 +104,12 @@ function AddQuestion({ onAdd }) {
       </FormContainer>
 
       <TipBox dark={darkMode}>
-        <strong>💡 Pro Tip:</strong> Try to add a brief note or learning after each question.  
-        It helps you when revising later or preparing for interviews. Also, mark the questions you've found difficult so you can revisit them in your revision schedule.
+        <Lightbulb size={24} color={darkMode ? '#00bcd4' : '#3498db'} />
+        <div>
+          <strong>Pro Tip:</strong> Try to add a brief note or learning after each question.
+          It helps you when revising later or preparing for interviews. Also, mark the questions
+          you've found difficult so you can revisit them in your revision schedule.
+        </div>
       </TipBox>
 
       <Quote dark={darkMode}>
