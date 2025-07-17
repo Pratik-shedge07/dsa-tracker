@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import QuestionList from '../components/QuestionList';
 import { FaSearch, FaSlidersH } from 'react-icons/fa';
+import QuestionList from '../components/QuestionList';
 
-// 🌗 Main Page
 const Page = styled.div`
   padding: 2rem;
   background-color: ${({ dark }) => (dark ? '#121212' : '#f4f6f8')};
@@ -12,7 +11,6 @@ const Page = styled.div`
   transition: all 0.3s ease;
 `;
 
-// 📌 Heading
 const Heading = styled.h2`
   font-size: 2.4rem;
   font-weight: 700;
@@ -20,7 +18,6 @@ const Heading = styled.h2`
   text-align: center;
 `;
 
-// 📦 Card Layout
 const FilterCard = styled.div`
   background-color: ${({ dark }) => (dark ? '#1e1e1e' : '#ffffff')};
   border: 1px solid ${({ dark }) => (dark ? '#333' : '#ddd')};
@@ -32,7 +29,6 @@ const FilterCard = styled.div`
   max-width: 1000px;
 `;
 
-// 🧩 Filter Heading
 const FilterHeader = styled.div`
   display: flex;
   align-items: center;
@@ -43,14 +39,12 @@ const FilterHeader = styled.div`
   color: ${({ dark }) => (dark ? '#ccc' : '#333')};
 `;
 
-// 📱 Responsive Filter Grid
 const FiltersGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 1rem;
 `;
 
-// 🔍 Search Input Wrapper
 const InputWrapper = styled.div`
   position: relative;
   width: 100%;
@@ -66,7 +60,6 @@ const SearchIcon = styled(FaSearch)`
   font-size: 0.9rem;
 `;
 
-// 🧾 Input Field
 const Input = styled.input`
   width: 100%;
   padding: 0.6rem 0.75rem 0.6rem 2.2rem;
@@ -87,7 +80,6 @@ const Input = styled.input`
   }
 `;
 
-// 🔻 Select Dropdown
 const Select = styled.select`
   width: 100%;
   padding: 0.6rem 1rem;
@@ -113,6 +105,7 @@ function AllQuestions({ questions, onDelete }) {
 
   const darkMode = localStorage.getItem('dark-mode') === 'true';
 
+  // Sorting logic
   const sorted = [...questions].sort((a, b) => {
     if (!sortKey) return 0;
     let valA = a[sortKey];
@@ -129,6 +122,7 @@ function AllQuestions({ questions, onDelete }) {
     return (valA < valB ? -1 : valA > valB ? 1 : 0) * (sortOrder === 'asc' ? 1 : -1);
   });
 
+  // Filter logic
   const filtered = sorted.filter(
     (q) =>
       (filterDifficulty === 'All' || q.difficulty === filterDifficulty) &&
@@ -173,9 +167,10 @@ function AllQuestions({ questions, onDelete }) {
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
           >
-            <option value="All">All Statuses</option>
-            <option value="Pending">Pending</option>
-            <option value="Solved">Solved</option>
+            <option value="All">All Status</option>
+            <option value="Not Started">Not Started</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
           </Select>
 
           <Select
@@ -193,14 +188,19 @@ function AllQuestions({ questions, onDelete }) {
             dark={darkMode}
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
+            disabled={!sortKey}
           >
-            <option value="asc">Ascending ⬆️</option>
-            <option value="desc">Descending ⬇️</option>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
           </Select>
         </FiltersGrid>
       </FilterCard>
 
-      <QuestionList questions={filtered} onDelete={onDelete} />
+      <QuestionList
+        questions={filtered}
+        onDelete={onDelete}
+        darkMode={darkMode}
+      />
     </Page>
   );
 }

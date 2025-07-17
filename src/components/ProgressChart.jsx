@@ -8,87 +8,52 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { FaChartPie } from 'react-icons/fa';
 
 const ChartWrapper = styled.div`
   width: 100%;
-  max-width: 520px;
-  height: 340px;
-  margin: 2rem auto;
-  background: linear-gradient(145deg, #1b2735, #243b55);
-  border-radius: 20px;
-  padding: 2rem 1.5rem;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-  color: #e0e0e0;
+  max-width: 700px;
+  height: 350px;
 `;
 
-const Title = styled.h3`
-  text-align: center;
-  margin-bottom: 1.5rem;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #e0e0e0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.6rem;
-`;
+const COLORS = ['#28a745', '#ffc107', '#dc3545'];
 
-const COLORS = ['#00C49F', '#FF6B6B'];
-
-function ProgressChart({ questions }) {
-  const solved = questions.filter((q) => q.status === 'Solved').length;
-  const pending = questions.length - solved;
+const ProgressChart = ({ questions }) => {
+  const total = questions.length;
+  const completed = questions.filter((q) => q.status === 'Completed').length;
+  const inProgress = questions.filter((q) => q.status === 'In Progress').length;
+  const notStarted = questions.filter((q) => q.status === 'Not Started').length;
 
   const data = [
-    { name: 'Solved', value: solved },
-    { name: 'Pending', value: pending },
+    { name: 'Completed', value: completed },
+    { name: 'In Progress', value: inProgress },
+    { name: 'Not Started', value: notStarted },
   ];
 
   return (
     <ChartWrapper>
-      <Title>
-        <FaChartPie size={20} /> Completion Overview
-      </Title>
-      <ResponsiveContainer width="100%" height="90%">
+      <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
             data={data}
             dataKey="value"
+            nameKey="name"
             cx="50%"
             cy="50%"
-            outerRadius={90}
-            label={({ name, percent }) =>
-              `${name} (${(percent * 100).toFixed(0)}%)`
+            outerRadius={110}
+            label={(entry) =>
+              `${entry.name}: ${((entry.value / total) * 100).toFixed(1)}%`
             }
-            labelLine={false}
           >
             {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
+              <Cell key={`cell-${index}`} fill={COLORS[index]} />
             ))}
           </Pie>
-          <Tooltip
-            contentStyle={{
-              backgroundColor: '#1f2937',
-              borderColor: '#4b5563',
-              color: '#f9fafb',
-              borderRadius: '8px',
-            }}
-          />
-          <Legend
-            iconType="circle"
-            wrapperStyle={{
-              color: '#d1d5db',
-              fontSize: '0.85rem',
-            }}
-          />
+          <Tooltip />
+          <Legend verticalAlign="bottom" height={36} />
         </PieChart>
       </ResponsiveContainer>
     </ChartWrapper>
   );
-}
+};
 
 export default ProgressChart;

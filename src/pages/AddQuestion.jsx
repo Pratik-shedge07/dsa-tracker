@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Lightbulb } from 'lucide-react'; // Imported icon
+import { Lightbulb } from 'lucide-react';
 import TrackerForm from '../components/TrackerForm';
 
 const Page = styled.div`
@@ -45,8 +45,7 @@ const SubHeading = styled.p`
 const FormContainer = styled.div`
   width: 100%;
   max-width: 720px;
-  background: ${({ dark }) =>
-    dark ? 'rgba(30, 30, 30, 0.85)' : 'rgba(255, 255, 255, 0.85)'};
+   background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
   backdrop-filter: blur(12px);
   padding: 2.5rem 2rem;
   border-radius: 18px;
@@ -64,7 +63,7 @@ const FormContainer = styled.div`
 `;
 
 const TipBox = styled.div`
-  background-color: ${({ dark }) => (dark ? '#1a1a1a' : '#ffffff')};
+  background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
   color: ${({ dark }) => (dark ? '#ccc' : '#333')};
   border-left: 5px solid ${({ dark }) => (dark ? '#00bcd4' : '#3498db')};
   padding: 1.2rem 1.5rem;
@@ -88,7 +87,7 @@ const Quote = styled.blockquote`
   max-width: 700px;
 `;
 
-function AddQuestion({ onAdd }) {
+const AddQuestion = ({ onAdd }) => {
   const darkMode = localStorage.getItem('dark-mode') === 'true';
 
   return (
@@ -117,6 +116,6 @@ function AddQuestion({ onAdd }) {
       </Quote>
     </Page>
   );
-}
+};
 
 export default AddQuestion;

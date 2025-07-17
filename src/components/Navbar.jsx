@@ -1,63 +1,111 @@
-// 📁 components/Navbar.js
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { FiLayers } from 'react-icons/fi';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { Sun, Moon, LogOut, Home } from 'lucide-react';
 
-const NavbarContainer = styled.nav`
-  background-color: #0f172a;
-  color: white;
+const Nav = styled.nav`
+  background-color: ${({ dark }) => (dark ? '#0d1117' : '#f4f6f8')};
+  color: ${({ dark }) => (dark ? '#c9d1d9' : '#2c3e50')};
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  border-bottom: 1px solid #1e293b;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: ${({ dark }) =>
+    dark ? '0 1px 8px rgba(255, 255, 255, 0.05)' : '0 1px 8px rgba(0, 0, 0, 0.1)'};
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 100;
 `;
 
-const Logo = styled(Link)`
-  display: flex;
-  align-items: center;
-  color: #38bdf8;
+const Logo = styled.div`
+  font-weight: 700;
   font-size: 1.4rem;
-  text-decoration: none;
-  gap: 0.5rem;
+  cursor: pointer;
+  color: ${({ dark }) => (dark ? '#58a6ff' : '#2c3e50')};
+  user-select: none;
 `;
 
-const Menu = styled.div`
+const NavItems = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
+`;
 
-  a {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
+const StyledLink = styled(NavLink)`
+  color: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
 
-    &:hover {
-      color: #60a5fa;
-    }
+  &.active {
+    background-color: ${({ dark }) => (dark ? '#238636' : '#a5d6ff')};
+    color: ${({ dark }) => (dark ? '#d2f8d2' : '#034078')};
+  }
+
+  &:hover {
+    background-color: ${({ dark }) => (dark ? '#30363d' : '#d0e7ff')};
   }
 `;
 
-function Navbar() {
+const Button = styled.button`
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ dark }) => (dark ? '#30363d' : '#d0e7ff')};
+  }
+`;
+
+function Navbar({ darkMode, toggleDarkMode, isLoggedIn, onLogout }) {
+  const navigate = useNavigate();
+
+  const handleLogoutClick = () => {
+    onLogout();
+    navigate('/login');
+  };
+
   return (
-    <NavbarContainer>
-      <Logo to="/">
-        <FiLayers />
-        DSA Tracker
+    <Nav dark={darkMode}>
+      <Logo dark={darkMode} onClick={() => navigate('/')}>
+        DSA Master Tracker
       </Logo>
-      <Menu>
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/add">Add</Link>
-        <Link to="/all">All</Link>
-        <Link to="/export">Export</Link>
-        <Link to="/about">About</Link>
-      </Menu>
-    </NavbarContainer>
+
+      <NavItems>
+        <StyledLink to="/" dark={darkMode}>
+          Home
+        </StyledLink>
+        <StyledLink to="/questions" dark={darkMode}>
+          Questions
+        </StyledLink>
+        <StyledLink to="/add" dark={darkMode}>
+          Add
+        </StyledLink>
+        <StyledLink to="/export" dark={darkMode}>
+          Export
+        </StyledLink>
+        <StyledLink to="/about" dark={darkMode}>
+          About
+        </StyledLink>
+
+        <Button onClick={toggleDarkMode} dark={darkMode} title="Toggle Dark Mode" aria-label="Toggle Dark Mode">
+          {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+        </Button>
+
+        {isLoggedIn && (
+          <Button onClick={handleLogoutClick} dark={darkMode} title="Logout" aria-label="Logout">
+            <LogOut size={18} />
+          </Button>
+        )}
+      </NavItems>
+    </Nav>
   );
 }
 

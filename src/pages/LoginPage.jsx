@@ -90,7 +90,6 @@ const Button = styled.button`
   }
 `;
 
-// ✅ Make sure you accept the `onLogin` prop
 const LoginRegister = ({ onLogin }) => {
   const [flipped, setFlipped] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
@@ -111,7 +110,7 @@ const LoginRegister = ({ onLogin }) => {
     if (user) {
       toast.success('Login successful!');
       localStorage.setItem('isLoggedIn', 'true');
-      if (onLogin) onLogin(); // ✅ Call the onLogin function from App.js
+      if (onLogin) onLogin();
       setTimeout(() => navigate('/'), 1500);
     } else {
       toast.error('Invalid email or password');
@@ -124,6 +123,8 @@ const LoginRegister = ({ onLogin }) => {
 
     if (existingUser) {
       toast.error('User already exists');
+    } else if (!registerName || !registerEmail || !registerPassword) {
+      toast.error('Please fill in all fields');
     } else {
       users.push({
         name: registerName,
@@ -133,6 +134,9 @@ const LoginRegister = ({ onLogin }) => {
       localStorage.setItem('users', JSON.stringify(users));
       toast.success('Registered successfully!');
       setFlipped(false);
+      setRegisterName('');
+      setRegisterEmail('');
+      setRegisterPassword('');
     }
   };
 

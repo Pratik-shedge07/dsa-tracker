@@ -8,7 +8,7 @@ const Container = styled(motion.div)`
   max-width: 800px;
   margin: 3rem auto;
   padding: 2rem;
-  background-color: ${({ dark }) => (dark ? '#1a1a1a' : '#ffffff')};
+   background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
   color: ${({ dark }) => (dark ? '#e0e0e0' : '#2c3e50')};
   border-radius: 20px;
   box-shadow: ${({ dark }) =>
@@ -102,6 +102,7 @@ const StackIcons = styled.div`
 
   svg {
     transition: transform 0.3s;
+    cursor: default;
     &:hover {
       transform: scale(1.2);
     }
@@ -144,6 +145,7 @@ const AboutPage = () => {
           target="_blank"
           rel="noopener noreferrer"
           type="github"
+          aria-label="GitHub"
         >
           <FaGithub /> GitHub
         </ButtonLink>
@@ -153,6 +155,7 @@ const AboutPage = () => {
           target="_blank"
           rel="noopener noreferrer"
           type="linkedin"
+          aria-label="LinkedIn"
         >
           <FaLinkedin /> LinkedIn
         </ButtonLink>
@@ -162,6 +165,7 @@ const AboutPage = () => {
           target="_blank"
           rel="noopener noreferrer"
           type="resume"
+          aria-label="Resume"
         >
           <FaDownload /> Resume
         </ButtonLink>

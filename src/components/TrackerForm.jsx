@@ -2,174 +2,175 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const Form = styled.form`
-  background-color: ${({ dark }) => (dark ? '#1e1e1e' : '#ffffff')};
-  padding: 2rem;
-  margin-bottom: 2rem;
-  border-radius: 16px;
-  box-shadow: ${({ dark }) =>
-    dark ? '0 4px 18px rgba(255, 255, 255, 0.05)' : '0 4px 14px rgba(0, 0, 0, 0.08)'};
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1.2rem;
-  transition: all 0.3s ease;
-`;
-
-const Field = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 `;
 
 const Label = styled.label`
-  margin-bottom: 0.4rem;
-  font-size: 0.92rem;
-  font-weight: 500;
-  color: ${({ dark }) => (dark ? '#cccccc' : '#444')};
+  font-weight: 600;
+  font-size: 1rem;
+  color: ${({ dark }) => (dark ? '#ddd' : '#222')};
 `;
 
 const Input = styled.input`
-  padding: 0.6rem 1rem;
+  padding: 0.55rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid ${({ dark }) => (dark ? '#444' : '#ccc')};
+  background-color: ${({ dark }) => (dark ? '#222' : '#fff')};
+  color: ${({ dark }) => (dark ? '#eee' : '#222')};
   font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid ${({ dark }) => (dark ? '#555' : '#ccc')};
-  background-color: ${({ dark }) => (dark ? '#2b2b2b' : '#fff')};
-  color: ${({ dark }) => (dark ? '#f0f0f0' : '#000')};
-  transition: border-color 0.3s ease, background-color 0.3s ease;
 
   &:focus {
     outline: none;
     border-color: ${({ dark }) => (dark ? '#00bcd4' : '#3498db')};
-    background-color: ${({ dark }) => (dark ? '#262626' : '#fefefe')};
+    box-shadow: 0 0 8px ${({ dark }) => (dark ? '#00bcd4' : '#3498db')};
   }
 `;
 
 const Select = styled.select`
-  padding: 0.6rem 1rem;
+  padding: 0.55rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid ${({ dark }) => (dark ? '#444' : '#ccc')};
+  background-color: ${({ dark }) => (dark ? '#222' : '#fff')};
+  color: ${({ dark }) => (dark ? '#eee' : '#222')};
   font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid ${({ dark }) => (dark ? '#555' : '#ccc')};
-  background-color: ${({ dark }) => (dark ? '#2b2b2b' : '#fff')};
-  color: ${({ dark }) => (dark ? '#f0f0f0' : '#000')};
-  transition: border-color 0.3s ease, background-color 0.3s ease;
 
   &:focus {
     outline: none;
     border-color: ${({ dark }) => (dark ? '#00bcd4' : '#3498db')};
-    background-color: ${({ dark }) => (dark ? '#262626' : '#fefefe')};
+    box-shadow: 0 0 8px ${({ dark }) => (dark ? '#00bcd4' : '#3498db')};
   }
-`;
-
-const ButtonWrapper = styled.div`
-  grid-column: 1 / -1;
-  text-align: center;
-  margin-top: 1rem;
 `;
 
 const Button = styled.button`
-  background-color: #27ae60;
-  color: white;
-  padding: 0.75rem 2rem;
-  font-weight: 600;
+  padding: 0.8rem 1rem;
+  background-color: #00bcd4;
+  color: #fff;
+  font-weight: 700;
   font-size: 1.05rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s;
 
   &:hover {
-    background-color: #1e8449;
-    transform: scale(1.05);
+    background-color: #0097a7;
   }
 `;
 
+const ErrorText = styled.p`
+  color: #ff5252;
+  font-weight: 600;
+  margin: 0;
+`;
+
 function TrackerForm({ onAdd }) {
+  const dark = localStorage.getItem('dark-mode') === 'true';
+
   const [title, setTitle] = useState('');
   const [topic, setTopic] = useState('');
   const [difficulty, setDifficulty] = useState('Easy');
-  const [status, setStatus] = useState('Pending');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-
-  const darkMode = localStorage.getItem('dark-mode') === 'true';
+  const [status, setStatus] = useState('Not Started');
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10)); // yyyy-mm-dd
+  const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title || !topic) return;
+
+    if (!title.trim() || !topic.trim()) {
+      setError('Title and Topic are required.');
+      return;
+    }
+
     const newQuestion = {
-      title,
-      topic,
+      title: title.trim(),
+      topic: topic.trim(),
       difficulty,
       status,
-      date
+      date,
     };
+
     onAdd(newQuestion);
+
     setTitle('');
     setTopic('');
     setDifficulty('Easy');
-    setStatus('Pending');
-    setDate(new Date().toISOString().split('T')[0]);
+    setStatus('Not Started');
+    setDate(new Date().toISOString().slice(0, 10));
+    setError('');
   };
 
   return (
-    <Form onSubmit={handleSubmit} dark={darkMode}>
-      <Field>
-        <Label dark={darkMode}>Title</Label>
-        <Input
-          dark={darkMode}
-          type="text"
-          placeholder="e.g. Two Sum"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </Field>
+    <Form onSubmit={handleSubmit} dark={dark}>
+      <Label dark={dark} htmlFor="title">
+        Question Title
+      </Label>
+      <Input
+        dark={dark}
+        id="title"
+        type="text"
+        placeholder="e.g. Two Sum"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
+      />
 
-      <Field>
-        <Label dark={darkMode}>Topic</Label>
-        <Input
-          dark={darkMode}
-          type="text"
-          placeholder="e.g. Arrays"
-          value={topic}
-          onChange={(e) => setTopic(e.target.value)}
-        />
-      </Field>
+      <Label dark={dark} htmlFor="topic">
+        Topic
+      </Label>
+      <Input
+        dark={dark}
+        id="topic"
+        type="text"
+        placeholder="e.g. Arrays, Trees"
+        value={topic}
+        onChange={(e) => setTopic(e.target.value)}
+        required
+      />
 
-      <Field>
-        <Label dark={darkMode}>Difficulty</Label>
-        <Select
-          dark={darkMode}
-          value={difficulty}
-          onChange={(e) => setDifficulty(e.target.value)}
-        >
-          <option value="Easy">Easy</option>
-          <option value="Medium">Medium</option>
-          <option value="Hard">Hard</option>
-        </Select>
-      </Field>
+      <Label dark={dark} htmlFor="difficulty">
+        Difficulty
+      </Label>
+      <Select
+        dark={dark}
+        id="difficulty"
+        value={difficulty}
+        onChange={(e) => setDifficulty(e.target.value)}
+      >
+        <option>Easy</option>
+        <option>Medium</option>
+        <option>Hard</option>
+      </Select>
 
-      <Field>
-        <Label dark={darkMode}>Status</Label>
-        <Select
-          dark={darkMode}
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        >
-          <option value="Pending">Pending</option>
-          <option value="Solved">Solved</option>
-        </Select>
-      </Field>
+      <Label dark={dark} htmlFor="status">
+        Status
+      </Label>
+      <Select
+        dark={dark}
+        id="status"
+        value={status}
+        onChange={(e) => setStatus(e.target.value)}
+      >
+        <option>Not Started</option>
+        <option>In Progress</option>
+        <option>Completed</option>
+      </Select>
 
-      <Field>
-        <Label dark={darkMode}>Date</Label>
-        <Input
-          dark={darkMode}
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
-      </Field>
+      <Label dark={dark} htmlFor="date">
+        Date
+      </Label>
+      <Input
+        dark={dark}
+        id="date"
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+      />
 
-      <ButtonWrapper>
-        <Button type="submit">Add Question</Button>
-      </ButtonWrapper>
+      {error && <ErrorText>{error}</ErrorText>}
+
+      <Button type="submit">Add Question</Button>
     </Form>
   );
 }
