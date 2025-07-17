@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -21,8 +23,8 @@ const Card = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
-  transition: transform 0.8s;
   transform-style: preserve-3d;
+  transition: transform 0.8s;
   transform: ${({ flipped }) => (flipped ? 'rotateY(180deg)' : 'none')};
 `;
 
@@ -32,7 +34,7 @@ const Side = styled.div`
   height: 100%;
   backface-visibility: hidden;
   background: linear-gradient(145deg, #1b2735, #243b55);
-  color: #fff;
+  color: #ffffff;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -41,10 +43,13 @@ const Side = styled.div`
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 `;
 
-const Front = styled(Side)``;
-
-const Back = styled(Side)`
+const BackSide = styled(Side)`
   transform: rotateY(180deg);
+`;
+
+const Title = styled.h2`
+  margin-bottom: 1rem;
+  text-align: center;
 `;
 
 const Input = styled.input`
@@ -85,34 +90,48 @@ const Button = styled.button`
   }
 `;
 
-const LoginRegister = () => {
+// ✅ Make sure you accept the `onLogin` prop
+const LoginRegister = ({ onLogin }) => {
   const [flipped, setFlipped] = useState(false);
-  const [loginData, setLoginData] = useState({ email: '', password: '' });
-  const [registerData, setRegisterData] = useState({ email: '', password: '', username: '' });
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [registerName, setRegisterName] = useState('');
+  const [registerEmail, setRegisterEmail] = useState('');
+  const [registerPassword, setRegisterPassword] = useState('');
   const navigate = useNavigate();
+
+  const handleFlip = () => setFlipped(!flipped);
 
   const handleLogin = () => {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const found = users.find(
-      (user) => user.email === loginData.email && user.password === loginData.password
+    const user = users.find(
+      (u) => u.email === loginEmail && u.password === loginPassword
     );
-    if (found) {
-      localStorage.setItem('currentUser', JSON.stringify(found));
-      navigate('/dashboard');
+
+    if (user) {
+      toast.success('Login successful!');
+      localStorage.setItem('isLoggedIn', 'true');
+      if (onLogin) onLogin(); // ✅ Call the onLogin function from App.js
+      setTimeout(() => navigate('/'), 1500);
     } else {
-      alert('Invalid email or password');
+      toast.error('Invalid email or password');
     }
   };
 
   const handleRegister = () => {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const exists = users.find((user) => user.email === registerData.email);
-    if (exists) {
-      alert('User already exists');
+    const existingUser = users.find((u) => u.email === registerEmail);
+
+    if (existingUser) {
+      toast.error('User already exists');
     } else {
-      const updatedUsers = [...users, registerData];
-      localStorage.setItem('users', JSON.stringify(updatedUsers));
-      alert('Registered successfully!');
+      users.push({
+        name: registerName,
+        email: registerEmail,
+        password: registerPassword,
+      });
+      localStorage.setItem('users', JSON.stringify(users));
+      toast.success('Registered successfully!');
       setFlipped(false);
     }
   };
@@ -121,48 +140,50 @@ const LoginRegister = () => {
     <PageWrapper>
       <CardContainer>
         <Card flipped={flipped}>
-          <Front>
-            <h2>Login</h2>
+          <Side>
+            <Title>Login</Title>
             <Input
               type="email"
               placeholder="Email"
-              value={loginData.email}
-              onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
+              value={loginEmail}
+              onChange={(e) => setLoginEmail(e.target.value)}
             />
             <Input
               type="password"
               placeholder="Password"
-              value={loginData.password}
-              onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+              value={loginPassword}
+              onChange={(e) => setLoginPassword(e.target.value)}
             />
             <Button onClick={handleLogin}>Login</Button>
-            <Button onClick={() => setFlipped(true)}>Go to Register</Button>
-          </Front>
-          <Back>
-            <h2>Register</h2>
+            <Button onClick={handleFlip}>Go to Register</Button>
+          </Side>
+
+          <BackSide>
+            <Title>Register</Title>
             <Input
               type="text"
-              placeholder="Username"
-              value={registerData.username}
-              onChange={(e) => setRegisterData({ ...registerData, username: e.target.value })}
+              placeholder="Name"
+              value={registerName}
+              onChange={(e) => setRegisterName(e.target.value)}
             />
             <Input
               type="email"
               placeholder="Email"
-              value={registerData.email}
-              onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
+              value={registerEmail}
+              onChange={(e) => setRegisterEmail(e.target.value)}
             />
             <Input
               type="password"
               placeholder="Password"
-              value={registerData.password}
-              onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
+              value={registerPassword}
+              onChange={(e) => setRegisterPassword(e.target.value)}
             />
             <Button onClick={handleRegister}>Register</Button>
-            <Button onClick={() => setFlipped(false)}>Go to Login</Button>
-          </Back>
+            <Button onClick={handleFlip}>Go to Login</Button>
+          </BackSide>
         </Card>
       </CardContainer>
+      <ToastContainer position="top-right" autoClose={3000} />
     </PageWrapper>
   );
 };
