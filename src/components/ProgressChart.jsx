@@ -1,27 +1,37 @@
 import React from 'react';
 import styled from 'styled-components';
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
+import { FaChartPie } from 'react-icons/fa';
 
 const ChartWrapper = styled.div`
   width: 100%;
-  max-width: 500px;
-  height: 320px;
+  max-width: 520px;
+  height: 340px;
   margin: 2rem auto;
-  background-color: ${({ dark }) => (dark ? '#1a1a1a' : '#ffffff')};
-  color: ${({ dark }) => (dark ? '#f5f5f5' : '#2c3e50')};
-  border-radius: 16px;
-  padding: 1rem 1.5rem;
-  box-shadow: ${({ dark }) =>
-    dark ? '0 0 15px rgba(255, 255, 255, 0.05)' : '0 2px 12px rgba(0, 0, 0, 0.1)'};
-  transition: all 0.3s ease;
+  background: linear-gradient(145deg, #1b2735, #243b55);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  color: #e0e0e0;
 `;
 
 const Title = styled.h3`
   text-align: center;
-  margin-bottom: 1.2rem;
-  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  color: ${({ dark }) => (dark ? '#e0e0e0' : '#2c3e50')};
+  color: #e0e0e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
 `;
 
 const COLORS = ['#00C49F', '#FF6B6B'];
@@ -35,11 +45,11 @@ function ProgressChart({ questions }) {
     { name: 'Pending', value: pending },
   ];
 
-  const darkMode = localStorage.getItem('dark-mode') === 'true';
-
   return (
-    <ChartWrapper dark={darkMode}>
-      <Title dark={darkMode}>📊 Completion Overview</Title>
+    <ChartWrapper>
+      <Title>
+        <FaChartPie size={20} /> Completion Overview
+      </Title>
       <ResponsiveContainer width="100%" height="90%">
         <PieChart>
           <Pie
@@ -54,20 +64,24 @@ function ProgressChart({ questions }) {
             labelLine={false}
           >
             {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
             ))}
           </Pie>
           <Tooltip
             contentStyle={{
-              backgroundColor: darkMode ? '#333' : '#fff',
-              borderColor: darkMode ? '#555' : '#ccc',
-              color: darkMode ? '#fff' : '#000',
+              backgroundColor: '#1f2937',
+              borderColor: '#4b5563',
+              color: '#f9fafb',
+              borderRadius: '8px',
             }}
           />
           <Legend
             iconType="circle"
             wrapperStyle={{
-              color: darkMode ? '#ccc' : '#444',
+              color: '#d1d5db',
               fontSize: '0.85rem',
             }}
           />

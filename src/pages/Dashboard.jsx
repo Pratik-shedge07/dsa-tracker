@@ -1,28 +1,35 @@
 import React from 'react';
 import styled from 'styled-components';
+import { MdLeaderboard } from 'react-icons/md';
 import ProgressChart from '../components/ProgressChart';
 
-const Page = styled.div`
-  padding: 2rem;
-  text-align: center;
-  background-color: ${({ dark }) => (dark ? '#121212' : '#f4f6f8')};
-  color: ${({ dark }) => (dark ? '#e0e0e0' : '#2c3e50')};
+const PageWrapper = styled.div`
   min-height: 100vh;
-  transition: all 0.3s ease;
+  padding: 2rem;
+  background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #e0e0e0;
 `;
 
 const Heading = styled.h2`
   font-size: 2rem;
   font-weight: bold;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 `;
 
-function Dashboard({ questions, darkMode }) {
+function Dashboard({ questions }) {
   return (
-    <Page dark={darkMode}>
-      <Heading>📊 Your Progress</Heading>
+    <PageWrapper>
+      <Heading>
+        <MdLeaderboard size={28} /> Your Progress
+      </Heading>
       <ProgressChart questions={questions} />
-    </Page>
+    </PageWrapper>
   );
 }
 
