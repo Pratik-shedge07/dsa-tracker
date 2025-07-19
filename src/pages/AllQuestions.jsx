@@ -5,28 +5,29 @@ import QuestionList from '../components/QuestionList';
 
 const Page = styled.div`
   padding: 2rem;
-  background-color: ${({ dark }) => (dark ? '#121212' : '#f4f6f8')};
-  color: ${({ dark }) => (dark ? '#e0e0e0' : '#2c3e50')};
   min-height: 100vh;
+  background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
+  color: #e0e0e0;
   transition: all 0.3s ease;
 `;
 
 const Heading = styled.h2`
-  font-size: 2.4rem;
+  font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 2rem;
   text-align: center;
+  color: #ffffff;
 `;
 
 const FilterCard = styled.div`
-  background-color: ${({ dark }) => (dark ? '#1e1e1e' : '#ffffff')};
-  border: 1px solid ${({ dark }) => (dark ? '#333' : '#ddd')};
-  box-shadow: ${({ dark }) =>
-    dark ? '0 2px 12px rgba(255, 255, 255, 0.04)' : '0 2px 12px rgba(0, 0, 0, 0.08)'};
-  border-radius: 16px;
+  background: rgba(32, 58, 67, 0.4);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
   padding: 2rem;
   margin: 0 auto 2rem auto;
   max-width: 1000px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 `;
 
 const FilterHeader = styled.div`
@@ -36,13 +37,13 @@ const FilterHeader = styled.div`
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
-  color: ${({ dark }) => (dark ? '#ccc' : '#333')};
+  color: #ffffff;
 `;
 
 const FiltersGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1rem;
+  gap: 1.2rem;
 `;
 
 const InputWrapper = styled.div`
@@ -55,7 +56,7 @@ const SearchIcon = styled(FaSearch)`
   top: 50%;
   left: 14px;
   transform: translateY(-50%);
-  color: ${({ dark }) => (dark ? '#aaa' : '#555')};
+  color: #aaa;
   pointer-events: none;
   font-size: 0.9rem;
 `;
@@ -64,19 +65,19 @@ const Input = styled.input`
   width: 100%;
   padding: 0.6rem 0.75rem 0.6rem 2.2rem;
   font-size: 1rem;
-  border-radius: 10px;
-  border: 1px solid ${({ dark }) => (dark ? '#444' : '#ccc')};
-  background-color: ${({ dark }) => (dark ? '#2b2b2b' : '#fff')};
-  color: ${({ dark }) => (dark ? '#fff' : '#000')};
-  transition: border 0.3s;
+  border-radius: 12px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #fff;
 
   &::placeholder {
-    color: ${({ dark }) => (dark ? '#aaa' : '#888')};
+    color: #bbb;
   }
 
   &:focus {
     outline: none;
-    border-color: ${({ dark }) => (dark ? '#00bcd4' : '#3498db')};
+    border: 1px solid #00bcd4;
+    background-color: rgba(255, 255, 255, 0.12);
   }
 `;
 
@@ -84,15 +85,15 @@ const Select = styled.select`
   width: 100%;
   padding: 0.6rem 1rem;
   font-size: 1rem;
-  border-radius: 10px;
-  border: 1px solid ${({ dark }) => (dark ? '#444' : '#ccc')};
-  background-color: ${({ dark }) => (dark ? '#2b2b2b' : '#fff')};
-  color: ${({ dark }) => (dark ? '#fff' : '#000')};
-  transition: border 0.3s;
+  border-radius: 12px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #fff;
 
   &:focus {
     outline: none;
-    border-color: ${({ dark }) => (dark ? '#00bcd4' : '#3498db')};
+    border: 1px solid #00bcd4;
+    background-color: rgba(255, 255, 255, 0.12);
   }
 `;
 
@@ -103,9 +104,6 @@ function AllQuestions({ questions, onDelete }) {
   const [sortKey, setSortKey] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
 
-  const darkMode = localStorage.getItem('dark-mode') === 'true';
-
-  // Sorting logic
   const sorted = [...questions].sort((a, b) => {
     if (!sortKey) return 0;
     let valA = a[sortKey];
@@ -122,7 +120,6 @@ function AllQuestions({ questions, onDelete }) {
     return (valA < valB ? -1 : valA > valB ? 1 : 0) * (sortOrder === 'asc' ? 1 : -1);
   });
 
-  // Filter logic
   const filtered = sorted.filter(
     (q) =>
       (filterDifficulty === 'All' || q.difficulty === filterDifficulty) &&
@@ -131,19 +128,18 @@ function AllQuestions({ questions, onDelete }) {
   );
 
   return (
-    <Page dark={darkMode}>
+    <Page>
       <Heading>All Questions</Heading>
 
-      <FilterCard dark={darkMode}>
-        <FilterHeader dark={darkMode}>
+      <FilterCard>
+        <FilterHeader>
           <FaSlidersH /> Filter & Sort
         </FilterHeader>
 
         <FiltersGrid>
-          <InputWrapper dark={darkMode}>
-            <SearchIcon dark={darkMode} />
+          <InputWrapper>
+            <SearchIcon />
             <Input
-              dark={darkMode}
               type="text"
               placeholder="Search by topic"
               value={search}
@@ -151,33 +147,21 @@ function AllQuestions({ questions, onDelete }) {
             />
           </InputWrapper>
 
-          <Select
-            dark={darkMode}
-            value={filterDifficulty}
-            onChange={(e) => setFilterDifficulty(e.target.value)}
-          >
+          <Select value={filterDifficulty} onChange={(e) => setFilterDifficulty(e.target.value)}>
             <option value="All">All Difficulties</option>
             <option value="Easy">Easy</option>
             <option value="Medium">Medium</option>
             <option value="Hard">Hard</option>
           </Select>
 
-          <Select
-            dark={darkMode}
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-          >
+          <Select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
             <option value="All">All Status</option>
             <option value="Not Started">Not Started</option>
             <option value="In Progress">In Progress</option>
             <option value="Completed">Completed</option>
           </Select>
 
-          <Select
-            dark={darkMode}
-            value={sortKey}
-            onChange={(e) => setSortKey(e.target.value)}
-          >
+          <Select value={sortKey} onChange={(e) => setSortKey(e.target.value)}>
             <option value="">Sort By</option>
             <option value="title">Title</option>
             <option value="difficulty">Difficulty</option>
@@ -185,7 +169,6 @@ function AllQuestions({ questions, onDelete }) {
           </Select>
 
           <Select
-            dark={darkMode}
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
             disabled={!sortKey}
@@ -196,11 +179,7 @@ function AllQuestions({ questions, onDelete }) {
         </FiltersGrid>
       </FilterCard>
 
-      <QuestionList
-        questions={filtered}
-        onDelete={onDelete}
-        darkMode={darkMode}
-      />
+      <QuestionList questions={filtered} onDelete={onDelete} darkMode={true} />
     </Page>
   );
 }
