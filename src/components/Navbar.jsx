@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Sun, Moon, LogOut } from 'lucide-react';
+import { Sun, Moon, LogOut, Menu } from 'lucide-react';
 
 const Nav = styled.nav`
   background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
@@ -28,6 +28,23 @@ const NavItems = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
+
+  @media (max-width: 768px) {
+    position: absolute;
+    top: 64px;
+    right: 0;
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    flex-direction: column;
+    align-items: flex-start;
+    width: 200px;
+    padding: 1rem;
+    box-shadow: -2px 2px 12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+    transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(110%)')};
+    pointer-events: ${({ open }) => (open ? 'auto' : 'none')};
+    opacity: ${({ open }) => (open ? 1 : 0)};
+    z-index: 200;
+  }
 `;
 
 const StyledLink = styled(NavLink)`
@@ -46,6 +63,11 @@ const StyledLink = styled(NavLink)`
   &:hover {
     background-color: rgba(255, 255, 255, 0.1);
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+  }
 `;
 
 const Button = styled.button`
@@ -63,39 +85,67 @@ const Button = styled.button`
   }
 `;
 
+const Hamburger = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  color: #e4e6eb;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  margin-left: 1rem;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+
 function Navbar({ darkMode, toggleDarkMode, isLoggedIn, onLogout }) {
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogoutClick = () => {
     onLogout();
     navigate('/login');
+    setMenuOpen(false);
+  };
+
+  const handleNavClick = (to) => {
+    navigate(to);
+    setMenuOpen(false);
   };
 
   return (
     <Nav>
-      <Logo onClick={() => navigate('/')}>DSA Master Tracker</Logo>
-
-      <NavItems>
-        <StyledLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>
+      <Logo onClick={() => handleNavClick('/')}>DSA Master Tracker</Logo>
+      <Hamburger
+        aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+        aria-expanded={menuOpen}
+        aria-controls="navbar-menu"
+        onClick={() => setMenuOpen((open) => !open)}
+      >
+        <Menu size={28} />
+      </Hamburger>
+      <NavItems id="navbar-menu" open={menuOpen}>
+        <StyledLink to="/" end onClick={() => setMenuOpen(false)}>
           Home
         </StyledLink>
-        <StyledLink to="/questions" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <StyledLink to="/questions" onClick={() => setMenuOpen(false)}>
           Questions
         </StyledLink>
-        <StyledLink to="/add" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <StyledLink to="/add" onClick={() => setMenuOpen(false)}>
           Add
         </StyledLink>
-        <StyledLink to="/export" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <StyledLink to="/export" onClick={() => setMenuOpen(false)}>
           Export
         </StyledLink>
-        <StyledLink to="/about" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <StyledLink to="/about" onClick={() => setMenuOpen(false)}>
           About
         </StyledLink>
-
         <Button onClick={toggleDarkMode} title="Toggle Dark Mode" aria-label="Toggle Dark Mode">
           {darkMode ? <Sun size={18} /> : <Moon size={18} />}
         </Button>
-
         {isLoggedIn && (
           <Button onClick={handleLogoutClick} title="Logout" aria-label="Logout">
             <LogOut size={18} />
