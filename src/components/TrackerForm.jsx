@@ -1,6 +1,23 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+const FormCard = styled.div`
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  color: #e4e6eb;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+  padding: 2.2rem 2.5rem 2rem 2.5rem;
+  margin: 2rem auto 2.5rem auto;
+  max-width: 600px;
+  width: 100%;
+
+  @media (max-width: 700px) {
+    padding: 1.2rem 0.7rem 1.2rem 0.7rem;
+    margin: 1rem 0.2rem 1.5rem 0.2rem;
+    max-width: 100%;
+  }
+`;
+
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -10,7 +27,7 @@ const Form = styled.form`
 const Label = styled.label`
   font-weight: 600;
   font-size: 1rem;
-  color: ${({ dark }) => (dark ? '#ddd' : '#222')};
+  color: ${({ dark }) => (dark ? '#ddd' : '#e4e6eb')};
 `;
 
 const Input = styled.input`
@@ -25,6 +42,11 @@ const Input = styled.input`
     outline: none;
     border-color: ${({ dark }) => (dark ? '#00bcd4' : '#3498db')};
     box-shadow: 0 0 8px ${({ dark }) => (dark ? '#00bcd4' : '#3498db')};
+  }
+
+  @media (max-width: 700px) {
+    font-size: 0.97rem;
+    padding: 0.45rem 0.7rem;
   }
 `;
 
@@ -41,6 +63,11 @@ const Select = styled.select`
     border-color: ${({ dark }) => (dark ? '#00bcd4' : '#3498db')};
     box-shadow: 0 0 8px ${({ dark }) => (dark ? '#00bcd4' : '#3498db')};
   }
+
+  @media (max-width: 700px) {
+    font-size: 0.97rem;
+    padding: 0.45rem 0.7rem;
+  }
 `;
 
 const Button = styled.button`
@@ -56,6 +83,11 @@ const Button = styled.button`
 
   &:hover {
     background-color: #0097a7;
+  }
+
+  @media (max-width: 700px) {
+    font-size: 1rem;
+    padding: 0.7rem 0.8rem;
   }
 `;
 
@@ -102,76 +134,78 @@ function TrackerForm({ onAdd }) {
   };
 
   return (
-    <Form onSubmit={handleSubmit} dark={dark}>
-      <Label dark={dark} htmlFor="title">
-        Question Title
-      </Label>
-      <Input
-        dark={dark}
-        id="title"
-        type="text"
-        placeholder="e.g. Two Sum"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        required
-      />
+    <FormCard>
+      <Form onSubmit={handleSubmit} dark={dark}>
+        <Label dark={dark} htmlFor="title">
+          Question Title
+        </Label>
+        <Input
+          dark={dark}
+          id="title"
+          type="text"
+          placeholder="e.g. Two Sum"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
 
-      <Label dark={dark} htmlFor="topic">
-        Topic
-      </Label>
-      <Input
-        dark={dark}
-        id="topic"
-        type="text"
-        placeholder="e.g. Arrays, Trees"
-        value={topic}
-        onChange={(e) => setTopic(e.target.value)}
-        required
-      />
+        <Label dark={dark} htmlFor="topic">
+          Topic
+        </Label>
+        <Input
+          dark={dark}
+          id="topic"
+          type="text"
+          placeholder="e.g. Arrays, Trees"
+          value={topic}
+          onChange={(e) => setTopic(e.target.value)}
+          required
+        />
 
-      <Label dark={dark} htmlFor="difficulty">
-        Difficulty
-      </Label>
-      <Select
-        dark={dark}
-        id="difficulty"
-        value={difficulty}
-        onChange={(e) => setDifficulty(e.target.value)}
-      >
-        <option>Easy</option>
-        <option>Medium</option>
-        <option>Hard</option>
-      </Select>
+        <Label dark={dark} htmlFor="difficulty">
+          Difficulty
+        </Label>
+        <Select
+          dark={dark}
+          id="difficulty"
+          value={difficulty}
+          onChange={(e) => setDifficulty(e.target.value)}
+        >
+          <option>Easy</option>
+          <option>Medium</option>
+          <option>Hard</option>
+        </Select>
 
-      <Label dark={dark} htmlFor="status">
-        Status
-      </Label>
-      <Select
-        dark={dark}
-        id="status"
-        value={status}
-        onChange={(e) => setStatus(e.target.value)}
-      >
-        <option>Not Started</option>
-        <option>In Progress</option>
-        <option>Completed</option>
-      </Select>
+        <Label dark={dark} htmlFor="status">
+          Status
+        </Label>
+        <Select
+          dark={dark}
+          id="status"
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+        >
+          <option>Not Started</option>
+          <option>In Progress</option>
+          <option>Completed</option>
+        </Select>
 
-      <Label dark={dark} htmlFor="date">
-        Date
-      </Label>
-      <Input
-        dark={dark}
-        id="date"
-        type="date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-      />
+        <Label dark={dark} htmlFor="date">
+          Date
+        </Label>
+        <Input
+          dark={dark}
+          id="date"
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        />
 
-      {error && <ErrorText>{error}</ErrorText>}
+        {error && <ErrorText>{error}</ErrorText>}
 
-      <Button type="submit">Add Question</Button>
-    </Form>
+        <Button type="submit">Add Question</Button>
+      </Form>
+    </FormCard>
   );
 }
 
