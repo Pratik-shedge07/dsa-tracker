@@ -10,10 +10,10 @@ const List = styled.ul`
 `;
 
 const Item = styled.li`
-  background-color: ${({ dark }) => (dark ? '#1e1e1e' : '#ffffff')};
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  color: #e4e6eb;
   border-radius: 16px;
-  box-shadow: ${({ dark }) =>
-    dark ? '0 4px 18px rgba(255, 255, 255, 0.05)' : '0 4px 18px rgba(0, 0, 0, 0.08)'};
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
   margin-bottom: 1.25rem;
   display: flex;
   flex-wrap: wrap;
@@ -22,8 +22,14 @@ const Item = styled.li`
   transition: box-shadow 0.3s;
 
   &:hover {
-    box-shadow: ${({ dark }) =>
-      dark ? '0 8px 30px rgba(255, 255, 255, 0.1)' : '0 8px 30px rgba(0, 0, 0, 0.15)'};
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  }
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem 0.8rem;
+    gap: 0.5rem;
   }
 `;
 
@@ -31,12 +37,21 @@ const Title = styled.span`
   font-weight: 700;
   flex: 2 1 300px;
   font-size: 1.1rem;
-  color: ${({ dark }) => (dark ? '#61dafb' : '#2c3e50')};
+  color: #61dafb;
+
+  @media (max-width: 700px) {
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+  }
 `;
 
 const Topic = styled.span`
   flex: 1 1 150px;
-  color: ${({ dark }) => (dark ? '#9ecfff' : '#555')};
+  color: #9ecfff;
+
+  @media (max-width: 700px) {
+    font-size: 0.97rem;
+  }
 `;
 
 const Difficulty = styled.span`
@@ -54,6 +69,9 @@ const Difficulty = styled.span`
         return '#6c757d';
     }
   }};
+  @media (max-width: 700px) {
+    font-size: 0.97rem;
+  }
 `;
 
 const Status = styled.span`
@@ -71,12 +89,19 @@ const Status = styled.span`
         return '#6c757d';
     }
   }};
+  @media (max-width: 700px) {
+    font-size: 0.97rem;
+  }
 `;
 
 const DateText = styled.span`
   flex: 1 1 120px;
   font-size: 0.9rem;
-  color: ${({ dark }) => (dark ? '#aaa' : '#666')};
+  color: #aaa;
+
+  @media (max-width: 700px) {
+    font-size: 0.9rem;
+  }
 `;
 
 const DeleteBtn = styled.button`
@@ -92,9 +117,12 @@ const DeleteBtn = styled.button`
     background-color: #dc3545;
     color: #fff;
   }
+  @media (max-width: 700px) {
+    align-self: flex-end;
+  }
 `;
 
-function QuestionList({ questions, onDelete, darkMode }) {
+function QuestionList({ questions, onDelete }) {
   if (!questions.length) {
     return <p style={{ textAlign: 'center', marginTop: '2rem' }}>No questions to display.</p>;
   }
@@ -102,12 +130,12 @@ function QuestionList({ questions, onDelete, darkMode }) {
   return (
     <List>
       {questions.map((q, idx) => (
-        <Item key={idx} dark={darkMode}>
-          <Title dark={darkMode}>{q.title}</Title>
-          <Topic dark={darkMode}>{q.topic}</Topic>
+        <Item key={idx}>
+          <Title>{q.title}</Title>
+          <Topic>{q.topic}</Topic>
           <Difficulty difficulty={q.difficulty}>{q.difficulty}</Difficulty>
           <Status status={q.status}>{q.status}</Status>
-          <DateText dark={darkMode}>{q.date}</DateText>
+          <DateText>{q.date}</DateText>
           <DeleteBtn
             title="Delete question"
             aria-label={`Delete question ${q.title}`}
