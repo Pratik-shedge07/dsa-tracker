@@ -17,10 +17,6 @@ function App() {
     return stored ? JSON.parse(stored) : [];
   });
 
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem('dark-mode') === 'true';
-  });
-
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     return localStorage.getItem('isLoggedIn') === 'true';
   });
@@ -30,10 +26,9 @@ function App() {
   }, [questions]);
 
   useEffect(() => {
-    localStorage.setItem('dark-mode', darkMode);
-    document.body.style.backgroundColor = darkMode ? '#121212' : '#f4f6f8';
-    document.body.style.color = darkMode ? '#e0e0e0' : '#2c3e50';
-  }, [darkMode]);
+    document.body.style.backgroundColor = '#f4f6f8';
+    document.body.style.color = '#2c3e50';
+  }, []);
 
   const handleAdd = (newQuestion) => {
     setQuestions((prev) => [newQuestion, ...prev]);
@@ -60,14 +55,12 @@ function App() {
           display: 'flex',
           flexDirection: 'column',
           minHeight: '100vh',
-          backgroundColor: darkMode ? '#121212' : '#f4f6f8',
-          color: darkMode ? '#e0e0e0' : '#2c3e50',
+          background: '#f4f6f8',
+          color: '#2c3e50',
           transition: 'all 0.3s ease',
         }}
       >
         <Navbar
-          darkMode={darkMode}
-          toggleDarkMode={() => setDarkMode(!darkMode)}
           isLoggedIn={isLoggedIn}
           onLogout={handleLogout}
         />

@@ -143,9 +143,7 @@ function Navbar({ darkMode, toggleDarkMode, isLoggedIn, onLogout }) {
         <StyledLink to="/about" onClick={() => setMenuOpen(false)}>
           About
         </StyledLink>
-        <Button onClick={toggleDarkMode} title="Toggle Dark Mode" aria-label="Toggle Dark Mode">
-          {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-        </Button>
+      
         {isLoggedIn && (
           <Button onClick={handleLogoutClick} title="Logout" aria-label="Logout">
             <LogOut size={18} />
