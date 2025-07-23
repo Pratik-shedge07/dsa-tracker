@@ -9,6 +9,10 @@ const Page = styled.div`
   background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
   color: #e0e0e0;
   transition: all 0.3s ease;
+
+  @media (max-width: 700px) {
+    padding: 1rem 0.3rem;
+  }
 `;
 
 const Heading = styled.h2`
@@ -17,10 +21,15 @@ const Heading = styled.h2`
   margin-bottom: 2rem;
   text-align: center;
   color: #ffffff;
+
+  @media (max-width: 700px) {
+    font-size: 1.7rem;
+    margin-bottom: 1.2rem;
+  }
 `;
 
 const FilterCard = styled.div`
-  background: rgba(32, 58, 67, 0.4);
+  background: rgba(32, 58, 67, 0.6);
   backdrop-filter: blur(12px);
   border-radius: 20px;
   padding: 2rem;
@@ -28,6 +37,13 @@ const FilterCard = styled.div`
   max-width: 1000px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.3s;
+
+  @media (max-width: 700px) {
+    padding: 1rem 0.5rem;
+    max-width: 100%;
+    margin-bottom: 1rem;
+  }
 `;
 
 const FilterHeader = styled.div`
@@ -38,12 +54,23 @@ const FilterHeader = styled.div`
   font-weight: 600;
   margin-bottom: 1.5rem;
   color: #ffffff;
+
+  @media (max-width: 700px) {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const FiltersGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 1.2rem;
+
+  @media (max-width: 700px) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
 `;
 
 const InputWrapper = styled.div`
@@ -79,6 +106,11 @@ const Input = styled.input`
     border: 1px solid #00bcd4;
     background-color: rgba(255, 255, 255, 0.12);
   }
+
+  @media (max-width: 700px) {
+    font-size: 0.97rem;
+    padding: 0.5rem 0.7rem 0.5rem 2rem;
+  }
 `;
 
 const Select = styled.select`
@@ -94,6 +126,11 @@ const Select = styled.select`
     outline: none;
     border: 1px solid #00bcd4;
     background-color: rgba(255, 255, 255, 0.12);
+  }
+
+  @media (max-width: 700px) {
+    font-size: 0.97rem;
+    padding: 0.5rem 0.7rem;
   }
 `;
 
