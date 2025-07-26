@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { MdLeaderboard } from 'react-icons/md';
 import ProgressChart from '../components/ProgressChart';
@@ -34,6 +34,50 @@ const Heading = styled.h2`
   }
 `;
 
+const StatsBox = styled.div`
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2rem;
+`;
+
+const StatCard = styled.div`
+  background: #1c2b34;
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #00000040;
+  text-align: center;
+`;
+
+const StatNumber = styled.h3`
+  font-size: 1.6rem;
+  color: #4fc3f7;
+`;
+
+const StatLabel = styled.p`
+  font-size: 0.95rem;
+  color: #aaa;
+`;
+
+const FilterWrapper = styled.div`
+  margin-bottom: 1.5rem;
+`;
+
+const Select = styled.select`
+  background: #1e2f3b;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 1rem;
+  outline: none;
+
+  option {
+    background: #1e2f3b;
+  }
+`;
+
 const Message = styled.p`
   font-size: 1.2rem;
   color: #bbbbbb;
@@ -41,7 +85,18 @@ const Message = styled.p`
 `;
 
 function Dashboard({ questions = [] }) {
-  const hasQuestions = questions.length > 0;
+  const [filter, setFilter] = useState('all');
+
+  const filteredQuestions = useMemo(() => {
+    if (filter === 'all') return questions;
+    return questions.filter((q) => q.difficulty.toLowerCase() === filter);
+  }, [filter, questions]);
+
+  const total = questions.length;
+  const solved = questions.filter((q) => q.status === 'solved').length;
+  const pending = total - solved;
+
+  const progress = total ? ((solved / total) * 100).toFixed(1) : 0;
 
   return (
     <PageWrapper>
@@ -49,10 +104,38 @@ function Dashboard({ questions = [] }) {
         <MdLeaderboard size={28} /> Your Progress
       </Heading>
 
-      {hasQuestions ? (
-        <ProgressChart questions={questions} />
+      <StatsBox>
+        <StatCard>
+          <StatNumber>{total}</StatNumber>
+          <StatLabel>Total Questions</StatLabel>
+        </StatCard>
+        <StatCard>
+          <StatNumber>{solved}</StatNumber>
+          <StatLabel>Solved</StatLabel>
+        </StatCard>
+        <StatCard>
+          <StatNumber>{pending}</StatNumber>
+          <StatLabel>Pending</StatLabel>
+        </StatCard>
+        <StatCard>
+          <StatNumber>{progress}%</StatNumber>
+          <StatLabel>Completion</StatLabel>
+        </StatCard>
+      </StatsBox>
+
+      <FilterWrapper>
+        <Select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <option value="all">All</option>
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </Select>
+      </FilterWrapper>
+
+      {filteredQuestions.length > 0 ? (
+        <ProgressChart questions={filteredQuestions} />
       ) : (
-        <Message>No data yet. Start adding DSA questions!</Message>
+        <Message>No data found for selected filter.</Message>
       )}
     </PageWrapper>
   );
