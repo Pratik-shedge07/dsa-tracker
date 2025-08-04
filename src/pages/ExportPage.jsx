@@ -100,11 +100,9 @@ const ExportPage = ({ questions }) => {
         <FileText size={36} />
         <h1>DSA Export Tool</h1>
       </Logo>
-
       <Description>
         Download your progress and keep track offline
       </Description>
-
       <ExportButtons>
         <Button onClick={() => exportToCSV(questions)}>
           <FileDown size={20} />
