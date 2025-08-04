@@ -55,7 +55,6 @@ const ExportButtons = styled.div`
     align-items: stretch;
   }
 `;
-
 const Button = styled.button`
   padding: 1rem 1.5rem;
   display: flex;
@@ -70,19 +69,16 @@ const Button = styled.button`
   color: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transition: all 0.2s ease;
-
   &:hover {
     transform: translateY(-3px) scale(1.05);
     background-color: ${({ pdf }) => (pdf ? '#c0392b' : '#217dbb')};
   }
-
   @media (max-width: 700px) {
     font-size: 0.97rem;
     padding: 0.8rem 1rem;
     justify-content: center;
   }
 `;
-
 const Description = styled.p`
   font-size: 1.08rem;
   margin-bottom: 1.5rem;
