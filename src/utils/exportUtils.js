@@ -37,7 +37,6 @@ export function exportToPDF(data, filename = 'DSA_Questions.pdf') {
     q.status,
     q.date,
   ]);
-
   doc.autoTable({
     startY: 30,
     head: headers,
