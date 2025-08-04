@@ -92,7 +92,6 @@ const Description = styled.p`
     margin-bottom: 1rem;
   }
 `;
-
 const ExportPage = ({ questions }) => {
   return (
     <Wrapper>
@@ -108,7 +107,6 @@ const ExportPage = ({ questions }) => {
           <FileDown size={20} />
           Export as CSV
         </Button>
-
         <Button pdf onClick={() => exportToPDF(questions)}>
           <FileSignature size={20} />
           Export as PDF
