@@ -25,12 +25,10 @@ const Logo = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 2rem;
-
   svg {
     margin-right: 10px;
     color: #00c896;
   }
-
   h1 {
     font-size: 2rem;
     font-weight: bold;
