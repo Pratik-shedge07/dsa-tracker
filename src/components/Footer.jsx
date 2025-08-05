@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Github } from 'lucide-react';
-
 const FooterContainer = styled.footer`
   background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
   color: #e4e6eb;
@@ -15,13 +14,11 @@ const FooterContainer = styled.footer`
   flex-direction: column;
   align-items: center;
   gap: 0.4rem;
-
   @media (max-width: 768px) {
     padding: 1.2rem 1rem;
     font-size: 0.85rem;
   }
 `;
-
 const FooterLogo = styled.div`
   font-weight: 800;
   font-size: 1.3rem;
@@ -29,12 +26,10 @@ const FooterLogo = styled.div`
   letter-spacing: 1.2px;
   text-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
   transition: text-shadow 0.3s ease;
-
   &:hover {
     text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
   }
 `;
-
 const FooterText = styled.div`
   font-weight: 500;
   display: flex;
@@ -42,7 +37,6 @@ const FooterText = styled.div`
   gap: 0.4rem;
   flex-wrap: wrap;
 `;
-
 const ExternalLink = styled.a`
   color: #ffffff;
   display: inline-flex;
@@ -53,17 +47,14 @@ const ExternalLink = styled.a`
   font-weight: 500;
   text-decoration: none;
   transition: all 0.3s ease;
-
   &:hover {
     background-color: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
   }
-
   svg {
     margin-right: 6px;
   }
 `;
-
 function Footer() {
   return (
     <FooterContainer>
