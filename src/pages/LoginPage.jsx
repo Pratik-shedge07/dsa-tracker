@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 const PageWrapper = styled.div`
   display: flex;
   align-items: flex-start;
@@ -12,13 +11,11 @@ const PageWrapper = styled.div`
   padding-top: 60px;
   background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
 `;
-
 const CardContainer = styled.div`
   perspective: 1000px;
   width: 350px;
   height: 360px;
 `;
-
 const Card = styled.div`
   width: 100%;
   height: 100%;
@@ -27,7 +24,6 @@ const Card = styled.div`
   transition: transform 0.8s;
   transform: ${({ flipped }) => (flipped ? 'rotateY(180deg)' : 'none')};
 `;
-
 const Side = styled.div`
   position: absolute;
   width: 100%;
@@ -42,16 +38,13 @@ const Side = styled.div`
   border-radius: 20px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 `;
-
 const BackSide = styled(Side)`
   transform: rotateY(180deg);
 `;
-
 const Title = styled.h2`
   margin-bottom: 1rem;
   text-align: center;
 `;
-
 const Input = styled.input`
   margin-bottom: 1rem;
   padding: 0.7rem;
@@ -67,7 +60,6 @@ const Input = styled.input`
     box-shadow: 0 0 0 2px rgba(0, 92, 151, 0.2);
   }
 `;
-
 const Button = styled.button`
   padding: 0.75rem;
   border: none;
@@ -78,18 +70,15 @@ const Button = styled.button`
   color: white;
   transition: all 0.3s ease;
   margin-top: 0.5rem;
-
   &:hover {
     background: linear-gradient(to right, #363795, #005c97);
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   }
-
   &:active {
     transform: translateY(0);
   }
 `;
-
 const LoginRegister = ({ onLogin }) => {
   const [flipped, setFlipped] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
@@ -98,15 +87,12 @@ const LoginRegister = ({ onLogin }) => {
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const navigate = useNavigate();
-
   const handleFlip = () => setFlipped(!flipped);
-
   const handleLogin = () => {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
     const user = users.find(
       (u) => u.email === loginEmail && u.password === loginPassword
     );
-
     if (user) {
       toast.success('Login successful!');
       localStorage.setItem('isLoggedIn', 'true');
@@ -116,11 +102,9 @@ const LoginRegister = ({ onLogin }) => {
       toast.error('Invalid email or password');
     }
   };
-
   const handleRegister = () => {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
     const existingUser = users.find((u) => u.email === registerEmail);
-
     if (existingUser) {
       toast.error('User already exists');
     } else if (!registerName || !registerEmail || !registerPassword) {
@@ -139,7 +123,6 @@ const LoginRegister = ({ onLogin }) => {
       setRegisterPassword('');
     }
   };
-
   return (
     <PageWrapper>
       <CardContainer>
@@ -161,7 +144,6 @@ const LoginRegister = ({ onLogin }) => {
             <Button onClick={handleLogin}>Login</Button>
             <Button onClick={handleFlip}>Go to Register</Button>
           </Side>
-
           <BackSide>
             <Title>Register</Title>
             <Input
@@ -191,5 +173,4 @@ const LoginRegister = ({ onLogin }) => {
     </PageWrapper>
   );
 };
-
 export default LoginRegister;

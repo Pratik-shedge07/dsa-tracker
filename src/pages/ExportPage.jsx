@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { exportToCSV, exportToPDF } from '../utils/exportUtils';
 import { FileText, FileDown, FileSignature } from 'lucide-react';
-
 const Wrapper = styled.div`
   max-width: 700px;
   margin: 4rem auto;
@@ -38,7 +37,6 @@ const Logo = styled.div`
     }
   }
 `;
-
 const ExportButtons = styled.div`
   display: flex;
   justify-content: center;
@@ -108,5 +106,4 @@ const ExportPage = ({ questions }) => {
     </Wrapper>
   );
 };
-
 export default ExportPage;
