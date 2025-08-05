@@ -1,14 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Trash2 } from 'lucide-react';
-
 const List = styled.ul`
   max-width: 1000px;
   margin: 0 auto 3rem auto;
   padding: 0;
   list-style: none;
 `;
-
 const Item = styled.li`
   background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
   color: #e4e6eb;
@@ -20,11 +18,9 @@ const Item = styled.li`
   align-items: center;
   padding: 1rem 1.5rem;
   transition: box-shadow 0.3s;
-
   &:hover {
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
   }
-
   @media (max-width: 700px) {
     flex-direction: column;
     align-items: flex-start;
@@ -32,28 +28,23 @@ const Item = styled.li`
     gap: 0.5rem;
   }
 `;
-
 const Title = styled.span`
   font-weight: 700;
   flex: 2 1 300px;
   font-size: 1.1rem;
   color: #61dafb;
-
   @media (max-width: 700px) {
     font-size: 1rem;
     margin-bottom: 0.2rem;
   }
 `;
-
 const Topic = styled.span`
   flex: 1 1 150px;
   color: #9ecfff;
-
   @media (max-width: 700px) {
     font-size: 0.97rem;
   }
 `;
-
 const Difficulty = styled.span`
   flex: 1 1 100px;
   font-weight: 600;
@@ -73,7 +64,6 @@ const Difficulty = styled.span`
     font-size: 0.97rem;
   }
 `;
-
 const Status = styled.span`
   flex: 1 1 130px;
   font-weight: 600;

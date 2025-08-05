@@ -8,7 +8,6 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-
 const ChartCard = styled.div`
   background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
   color: #e4e6eb;
@@ -21,14 +20,12 @@ const ChartCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   @media (max-width: 768px) {
     padding: 1rem 0.5rem 1rem 0.5rem;
     margin: 1rem 0.2rem;
     max-width: 100%;
   }
 `;
-
 const ChartTitle = styled.div`
   font-weight: 700;
   font-size: 1.3rem;
@@ -37,30 +34,24 @@ const ChartTitle = styled.div`
   margin-bottom: 1.2rem;
   text-align: center;
 `;
-
 const ChartWrapper = styled.div`
   width: 100%;
   height: 350px;
-
   @media (max-width: 768px) {
     height: 230px;
   }
 `;
-
 const COLORS = ['#28a745', '#ffc107', '#dc3545'];
-
 const ProgressChart = ({ questions }) => {
   const total = questions.length;
   const completed = questions.filter((q) => q.status === 'Completed').length;
   const inProgress = questions.filter((q) => q.status === 'In Progress').length;
   const notStarted = questions.filter((q) => q.status === 'Not Started').length;
-
   const data = [
     { name: 'Completed', value: completed },
     { name: 'In Progress', value: inProgress },
     { name: 'Not Started', value: notStarted },
   ];
-
   return (
     <ChartCard>
       <ChartTitle>Progress Overview</ChartTitle>
@@ -92,5 +83,4 @@ const ProgressChart = ({ questions }) => {
     </ChartCard>
   );
 };
-
 export default ProgressChart;
