@@ -19,7 +19,6 @@ const Wrapper = styled.div`
     max-width: 100%;
   }
 `;
-
 const Logo = styled.div`
   display: flex;
   align-items: center;
